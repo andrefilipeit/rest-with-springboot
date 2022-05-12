@@ -1,4 +1,4 @@
-package br.com.erudio.exception.handler;
+package br.com.andrefilipeos.exception.handler;
 
 import java.util.Date;
 
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import br.com.erudio.exception.ExceptionResponse;
-import br.com.erudio.exception.UnsuportedMathOperationException;
+import br.com.andrefilipeos.exception.ExceptionResponse;
+import br.com.andrefilipeos.exception.UnsuportedMathOperationException;
 
 @ControllerAdvice
 @RestController

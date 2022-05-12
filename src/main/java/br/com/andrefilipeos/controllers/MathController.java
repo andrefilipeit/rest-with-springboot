@@ -1,13 +1,13 @@
-package br.com.erudio.controller;
+package br.com.andrefilipeos.controllers;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.erudio.exception.UnsuportedMathOperationException;
-import br.com.erudio.math.SimpleMath;
-import br.com.erudio.request.converters.NumberConverter;
+import br.com.andrefilipeos.converters.NumberConverter;
+import br.com.andrefilipeos.exception.UnsuportedMathOperationException;
+import br.com.andrefilipeos.math.SimpleMath;
 
 @RestController
 public class MathController {
