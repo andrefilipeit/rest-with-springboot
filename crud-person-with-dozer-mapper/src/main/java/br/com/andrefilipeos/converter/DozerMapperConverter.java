@@ -6,7 +6,7 @@ import java.util.List;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 
-public class DozerMaperConverter {
+public class DozerMapperConverter {
 	
 	private static Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 	
@@ -16,7 +16,7 @@ public class DozerMaperConverter {
 	}
 	
 	//Return a simple object converted 
-	public static <O, D> List<D> parseListObject(List<O> origin, Class<D> destination) {
+	public static <O, D> List<D> parseListObjects(List<O> origin, Class<D> destination) {
 		List<D> destinationObjects = new ArrayList<D>();
 		
 		for (Object o : origin) {

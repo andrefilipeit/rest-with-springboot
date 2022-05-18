@@ -23,6 +23,7 @@ public class PersonController {
 	@Autowired // this encapsules the same of new Object() instances
 	private PersonServices services;
 
+	
 	@GetMapping
 	public List<PersonVO> findAll() throws Exception {
 		return services.findAll();
@@ -42,6 +43,7 @@ public class PersonController {
 	public PersonVO update(@RequestBody PersonVO person) throws Exception {
 		return services.update(person);
 	}
+	
 	
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) throws Exception {
