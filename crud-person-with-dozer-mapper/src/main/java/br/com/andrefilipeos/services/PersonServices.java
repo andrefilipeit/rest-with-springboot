@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.andrefilipeos.converter.DozerMapperConverter;
+import br.com.andrefilipeos.converter.PersonConverter;
 import br.com.andrefilipeos.data.model.Person;
 import br.com.andrefilipeos.data.vo.PersonVO;
+import br.com.andrefilipeos.data.vo.v2.PersonVOV2;
 import br.com.andrefilipeos.exception.ResourceNotFoundException;
 import br.com.andrefilipeos.repository.PersonRepository;
 
@@ -17,12 +19,22 @@ public class PersonServices {
 
 	@Autowired
 	PersonRepository repository;
+	
+	@Autowired
+	PersonConverter converter;
 
 	public PersonVO create(PersonVO person) {
 		
 		var entity = DozerMapperConverter.parseObject(person, Person.class);
-		
 		var vo = DozerMapperConverter.parseObject(repository.save(entity), PersonVO.class);
+		
+		return vo;
+	}
+	
+	public PersonVOV2 createV2(PersonVOV2 person) {
+		
+		var entity = converter.convertVOV2ToEntity(person);
+		var vo = converter.convertEntityToVOV2(repository.save(entity));
 		
 		return vo;
 	}
