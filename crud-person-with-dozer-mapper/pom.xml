@@ -31,11 +31,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -46,7 +41,6 @@
 			<artifactId>dozer-core</artifactId>
 			<version>6.5.2</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -55,6 +49,23 @@
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+
+				<plugin>
+					<groupId>org.flywaydb</groupId>
+					<artifactId>flyway-maven-plugin</artifactId>
+					<configuration>
+						<url>jdbc:mysql://localhost:3306/rest_with_springboot?useTimezone=true&amp;serverTimezone=UTC&amp;useSSL=false</url>
+						<user>root</user>
+						<password>admin123</password>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>mysql</groupId>
+							<artifactId>mysql-connector-java</artifactId>
+							<version>${mysql.version}</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
