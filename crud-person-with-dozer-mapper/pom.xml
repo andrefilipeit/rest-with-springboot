@@ -52,6 +52,7 @@
 				</plugin>
 
 				<plugin>
+					<!-- >mvn flyway:migrate -->
 					<groupId>org.flywaydb</groupId>
 					<artifactId>flyway-maven-plugin</artifactId>
 					<configuration>
