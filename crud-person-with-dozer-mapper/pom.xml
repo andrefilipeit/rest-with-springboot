@@ -41,6 +41,11 @@
 			<artifactId>dozer-core</artifactId>
 			<version>6.5.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -60,13 +65,6 @@
 						<user>root</user>
 						<password>admin123</password>
 					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>mysql</groupId>
-							<artifactId>mysql-connector-java</artifactId>
-							<version>${mysql.version}</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
