@@ -18,7 +18,7 @@ import br.com.andrefilipeos.data.vo.v2.PersonVOV2;
 import br.com.andrefilipeos.services.PersonServices;
 
 @RestController
-@RequestMapping("/person") // Main path endpoint
+@RequestMapping("/api/person/v1") // Main path endpoint
 public class PersonController {
 
 	@Autowired // this encapsules the same of new Object() instances
