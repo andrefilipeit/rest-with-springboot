@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 
-		// Example with this code. GET - endpoint/.xml or endpoint/1.jon
+		// Example via EXTENSION. GET example: localhost:8080/api/person/v1.xml or json
 
 		/*
 		 * configurer.favorParameter(false).ignoreAcceptHeader(false).defaultContentType
@@ -22,11 +22,22 @@ public class WebConfig implements WebMvcConfigurer {
 		 */
 
 		
-		// Example with query param ?mediaType=xml or ?mediaType=json 
+		// Example with QUERY PARAM localhost:8080/api/person/v1?mediaType=xml or ?mediaType=json 
 		
-		configurer.favorPathExtension(false).favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(true)
-				.useRegisteredExtensionsOnly(false).defaultContentType(MediaType.APPLICATION_JSON)
-				.mediaType("json", MediaType.APPLICATION_JSON).mediaType("xml", MediaType.APPLICATION_XML);
+		/*
+		 * configurer.favorPathExtension(false).favorParameter(true).parameterName(
+		 * "mediaType").ignoreAcceptHeader(true)
+		 * .useRegisteredExtensionsOnly(false).defaultContentType(MediaType.
+		 * APPLICATION_JSON) .mediaType("json",
+		 * MediaType.APPLICATION_JSON).mediaType("xml", MediaType.APPLICATION_XML);
+		 */
+		
+		
+		// Example with HEADERS - Key: Accept / Value: application/xml or /json
+		
+		configurer.favorPathExtension(false).favorParameter(false).ignoreAcceptHeader(false)
+		.useRegisteredExtensionsOnly(false).defaultContentType(MediaType.APPLICATION_JSON)
+		.mediaType("json", MediaType.APPLICATION_JSON).mediaType("xml", MediaType.APPLICATION_XML);
 
 	}
 
