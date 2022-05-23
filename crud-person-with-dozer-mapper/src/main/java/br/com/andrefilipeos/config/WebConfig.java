@@ -12,8 +12,22 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-		configurer.favorParameter(false).ignoreAcceptHeader(false).defaultContentType(MediaType.APPLICATION_JSON)
+
+		// Example with this code. GET - endpoint/.xml or endpoint/1.jon
+
+		/*
+		 * configurer.favorParameter(false).ignoreAcceptHeader(false).defaultContentType
+		 * (MediaType.APPLICATION_JSON) .mediaType("json",
+		 * MediaType.APPLICATION_JSON).mediaType("xml", MediaType.APPLICATION_XML);
+		 */
+
+		
+		// Example with query param ?mediaType=xml or ?mediaType=json 
+		
+		configurer.favorPathExtension(false).favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(true)
+				.useRegisteredExtensionsOnly(false).defaultContentType(MediaType.APPLICATION_JSON)
 				.mediaType("json", MediaType.APPLICATION_JSON).mediaType("xml", MediaType.APPLICATION_XML);
+
 	}
 
 }
