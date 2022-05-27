@@ -1,5 +1,8 @@
 package br.com.andrefilipeos.controllers;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,28 +29,43 @@ public class PersonController {
 
 	
 	@GetMapping(produces = {"application/json", "application/xml", "application/x-yaml"})
-	public List<PersonVO> findAll() throws Exception {
-		return services.findAll();
+	public List<PersonVO> findAll() throws Exception{
+		List<PersonVO> persons =  services.findAll();
+		persons.stream().forEach(p -> {
+			try {
+				p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		return persons;
 	}
 	
 	@GetMapping(value = "/{id}", produces = {"application/json", "application/xml", "application/x-yaml"})
 	public PersonVO findById(@PathVariable("id") Long id) throws Exception {
-		return services.findById(id);
+		PersonVO personVO = services.findById(id);
+		personVO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		return personVO;
 	}
 	
 	@PostMapping(produces = {"application/json", "application/xml", "application/x-yaml"}, consumes = {"application/json", "application/xml", "application/x-yaml"})
 	public PersonVO create(@RequestBody PersonVO person) throws Exception {
-		return services.create(person);
+		PersonVO personVO = services.create(person);
+		personVO.add(linkTo(methodOn(PersonController.class).findById(personVO.getKey())).withSelfRel());
+		return personVO;
 	}
 	
-	@PostMapping("/v2")
+	@PostMapping("/v2") //Used to Endpoint-versioning 
 	public PersonVOV2 createV2(@RequestBody PersonVOV2 person) throws Exception {
 		return services.createV2(person);
 	}
 	
 	@PutMapping(produces = {"application/json", "application/xml", "application/x-yaml"}, consumes = {"application/json", "application/xml", "application/x-yaml"})
 	public PersonVO update(@RequestBody PersonVO person) throws Exception {
-		return services.update(person);
+		PersonVO personVO = services.update(person);
+		personVO.add(linkTo(methodOn(PersonController.class).findById(personVO.getKey())).withSelfRel());
+		return personVO;
+		
 	}
 	
 	
