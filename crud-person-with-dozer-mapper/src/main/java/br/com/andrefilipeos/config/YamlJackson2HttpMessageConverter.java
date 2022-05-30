@@ -1,4 +1,4 @@
-package br.com.andrefilipeos.serialization.converter;
+package br.com.andrefilipeos.config;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;

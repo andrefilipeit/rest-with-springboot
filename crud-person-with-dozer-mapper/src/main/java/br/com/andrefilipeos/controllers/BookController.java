@@ -16,59 +16,54 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.andrefilipeos.data.vo.PersonVO;
-import br.com.andrefilipeos.data.vo.v2.PersonVOV2;
-import br.com.andrefilipeos.services.PersonServices;
+import br.com.andrefilipeos.data.model.Book;
+import br.com.andrefilipeos.data.vo.BookVO;
+import br.com.andrefilipeos.services.BookServices;
 
 @RestController
-@RequestMapping("/api/person/v1") // Main path endpoint
-public class PersonController {
+@RequestMapping("/api/book/v1") // Main path endpoint
+public class BookController {
 
 	@Autowired // this encapsules the same of new Object() instances
-	private PersonServices services;
+	private BookServices services;
 
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
-	public List<PersonVO> findAll() throws Exception {
-		List<PersonVO> persons = services.findAll();
+	public List<BookVO> findAll() throws Exception {
+		List<BookVO> books = services.findAll();
 		// Implements HATEOAS
-		persons.stream().forEach(p -> {
+		books.stream().forEach(p -> {
 			try {
-				p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel());
+				p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
-		return persons;
+		return books;
 	}
 
 	@GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
-	public PersonVO findById(@PathVariable("id") Long id) throws Exception {
-		PersonVO personVO = services.findById(id);
+	public BookVO findById(@PathVariable("id") Long id) throws Exception {
+		BookVO personVO = services.findById(id);
 		// Implements HATEOAS
-		personVO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		personVO.add(linkTo(methodOn(BookController.class).findById(id)).withSelfRel());
 		return personVO;
 	}
 
 	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
-	public PersonVO create(@RequestBody PersonVO person) throws Exception {
-		PersonVO personVO = services.create(person);
+	public BookVO create(@RequestBody BookVO person) throws Exception {
+		BookVO personVO = services.create(person);
 		// Implements HATEOAS
-		personVO.add(linkTo(methodOn(PersonController.class).findById(personVO.getKey())).withSelfRel());
+		personVO.add(linkTo(methodOn(BookController.class).findById(personVO.getKey())).withSelfRel());
 		return personVO;
-	}
-
-	@PostMapping("/v2") // Used to Endpoint-versioning
-	public PersonVOV2 createV2(@RequestBody PersonVOV2 person) throws Exception {
-		return services.createV2(person);
 	}
 
 	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
-	public PersonVO update(@RequestBody PersonVO person) throws Exception {
-		PersonVO personVO = services.update(person);
+	public BookVO update(@RequestBody BookVO person) throws Exception {
+		BookVO personVO = services.update(person);
 		// Implements HATEOAS
-		personVO.add(linkTo(methodOn(PersonController.class).findById(personVO.getKey())).withSelfRel());
+		personVO.add(linkTo(methodOn(BookController.class).findById(personVO.getKey())).withSelfRel());
 		return personVO;
 
 	}

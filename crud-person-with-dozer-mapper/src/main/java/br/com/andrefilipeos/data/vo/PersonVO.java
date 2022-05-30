@@ -11,6 +11,7 @@ import com.github.dozermapper.core.Mapping;
 
 @JsonPropertyOrder({"id", "address", "first_name", "last_name", "gender"})
 public class PersonVO extends ResourceSupport implements Serializable {
+//ResourceSupport to implements HATEOAS with link
 
 	private static final long serialVersionUID = 1L;
 	
