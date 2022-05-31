@@ -20,6 +20,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- for Spring-boot Support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
@@ -30,6 +31,7 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
+		<!-- for Tests Support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -59,10 +61,24 @@
 			<artifactId>jackson-dataformat-yaml</artifactId>
 		</dependency>
 
-		<!-- for HATEOAS support -->
+		<!-- for HATEOAS Support -->
 		<dependency>
 			<groupId>org.springframework.hateoas</groupId>
 			<artifactId>spring-hateoas</artifactId>
+		</dependency>
+
+		<!-- for Swagger Support -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		
+		<!-- it's format all API documentation organized -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
 		</dependency>
 
 	</dependencies>
@@ -76,7 +92,7 @@
 				</plugin>
 
 				<plugin>
-					<!-- >mvn flyway:migrate -->
+					<!-- for Migration support $mvn flyway:migrate -->
 					<groupId>org.flywaydb</groupId>
 					<artifactId>flyway-maven-plugin</artifactId>
 					<configuration>
