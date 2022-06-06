@@ -19,7 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.andrefilipeos.data.vo.PersonVO;
 import br.com.andrefilipeos.data.vo.v2.PersonVOV2;
 import br.com.andrefilipeos.services.PersonServices;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+//@CrossOrigin Here we can enable CORS with all endpoit of Person Controller with @CrossOrigin
+@Api(value="Person Endpoints", description = "All endpoints for Person", tags = {"Person-endpoints"}) //Editting values from swagger UI
 @RestController
 @RequestMapping("/api/person/v1") // Main path endpoint
 public class PersonController {
@@ -27,6 +31,7 @@ public class PersonController {
 	@Autowired // this encapsules the same of new Object() instances
 	private PersonServices services;
 
+	@ApiOperation(value = "Return all Persons recordeds in database") //Swagger endpoint description@ApiOperation(value = "Return all Books recordeds in database") //Swagger endpoint description
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
 	public List<PersonVO> findAll() throws Exception {
 		List<PersonVO> persons = services.findAll();
@@ -41,6 +46,8 @@ public class PersonController {
 		return persons;
 	}
 
+	//@CrossOrigin(origins = "http://localhost:8080") Here we can enable CORS for this endpoit from Origin localhost:8080
+	@ApiOperation(value = "Return Person recorded by id passed") //Swagger endpoint description
 	@GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
 	public PersonVO findById(@PathVariable("id") Long id) throws Exception {
 		PersonVO personVO = services.findById(id);
@@ -49,6 +56,8 @@ public class PersonController {
 		return personVO;
 	}
 
+	//@CrossOrigin(origins = {"http://localhost:8080", "https://github.com/andrefilipeit"}) Here we can enable CORS for this endpoit from Origin localhost:8080 *and* github/andrefilipeit
+	@ApiOperation(value = "Record a Person in database") //Swagger endpoint description
 	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
 	public PersonVO create(@RequestBody PersonVO person) throws Exception {
@@ -63,6 +72,7 @@ public class PersonController {
 		return services.createV2(person);
 	}
 
+	@ApiOperation(value = "Changes a person that already exists") //Swagger endpoint description
 	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
 	public PersonVO update(@RequestBody PersonVO person) throws Exception {
@@ -73,6 +83,7 @@ public class PersonController {
 
 	}
 
+	@ApiOperation(value = "Delete Person by id") //Swagger endpoint description
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) throws Exception {
 		services.delete(id);

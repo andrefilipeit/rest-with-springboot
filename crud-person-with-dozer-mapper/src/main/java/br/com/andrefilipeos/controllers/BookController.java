@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.andrefilipeos.data.model.Book;
 import br.com.andrefilipeos.data.vo.BookVO;
 import br.com.andrefilipeos.services.BookServices;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value="Book Endpoints", description = "All endpoints for Book", tags = {"Book-endpoints"}) //Editting values from swagger UI
 @RestController
 @RequestMapping("/api/book/v1") // Main path endpoint
 public class BookController {
@@ -27,6 +29,7 @@ public class BookController {
 	@Autowired // this encapsules the same of new Object() instances
 	private BookServices services;
 
+	@ApiOperation(value = "Return all Books recordeds in database") //Swagger endpoint description
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
 	public List<BookVO> findAll() throws Exception {
 		List<BookVO> books = services.findAll();
@@ -41,6 +44,7 @@ public class BookController {
 		return books;
 	}
 
+	@ApiOperation(value = "Return Book recorded by id passed") //Swagger endpoint description 
 	@GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
 	public BookVO findById(@PathVariable("id") Long id) throws Exception {
 		BookVO personVO = services.findById(id);
@@ -49,6 +53,7 @@ public class BookController {
 		return personVO;
 	}
 
+	@ApiOperation(value = "Record a Book in database") //Swagger endpoint description
 	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
 	public BookVO create(@RequestBody BookVO person) throws Exception {
@@ -58,6 +63,7 @@ public class BookController {
 		return personVO;
 	}
 
+	@ApiOperation(value = "Changes a Book that already exists") //Swagger endpoint description
 	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
 	public BookVO update(@RequestBody BookVO person) throws Exception {
@@ -68,6 +74,7 @@ public class BookController {
 
 	}
 
+	@ApiOperation(value = "Delete Book by id") //Swagger endpoint description
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) throws Exception {
 		services.delete(id);
