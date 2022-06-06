@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,7 +56,7 @@ public class PersonController {
 		personVO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
 		return personVO;
 	}
-
+	
 	//@CrossOrigin(origins = {"http://localhost:8080", "https://github.com/andrefilipeit"}) Here we can enable CORS for this endpoit from Origin localhost:8080 *and* github/andrefilipeit
 	@ApiOperation(value = "Record a Person in database") //Swagger endpoint description
 	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
@@ -70,6 +71,16 @@ public class PersonController {
 	@PostMapping("/v2") // Used to Endpoint-versioning
 	public PersonVOV2 createV2(@RequestBody PersonVOV2 person) throws Exception {
 		return services.createV2(person);
+	}
+	
+	//@CrossOrigin(origins = "http://localhost:8080") Here we can enable CORS for this endpoit from Origin localhost:8080
+	@ApiOperation(value = "Disable a specific Person by id passed") //Swagger endpoint description
+	@PatchMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
+	public PersonVO disablePerson(@PathVariable("id") Long id) throws Exception {
+		PersonVO personVO = services.disablePerson(id);
+		// Implements HATEOAS
+		personVO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		return personVO;
 	}
 
 	@ApiOperation(value = "Changes a person that already exists") //Swagger endpoint description

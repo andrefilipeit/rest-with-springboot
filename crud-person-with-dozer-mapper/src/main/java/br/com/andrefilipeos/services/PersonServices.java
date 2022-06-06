@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.andrefilipeos.converter.DozerMapperConverter;
 import br.com.andrefilipeos.converter.PersonConverter;
@@ -62,6 +63,16 @@ public class PersonServices {
 	// Returning a PersonVO mock
 	public PersonVO findById(Long id) {
 		
+		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this id!"));
+		
+		return DozerMapperConverter.parseObject(entity, PersonVO.class);
+		
+	}
+	
+
+	@Transactional
+	public PersonVO disablePerson(Long id) {
+		repository.disablePerson(id); //Use JPQL
 		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this id!"));
 		
 		return DozerMapperConverter.parseObject(entity, PersonVO.class);
