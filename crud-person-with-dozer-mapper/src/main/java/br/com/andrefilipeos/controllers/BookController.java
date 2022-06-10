@@ -3,9 +3,14 @@ package br.com.andrefilipeos.controllers;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.andrefilipeos.data.vo.BookVO;
@@ -28,11 +34,23 @@ public class BookController {
 
 	@Autowired // this encapsules the same of new Object() instances
 	private BookServices services;
+	
+	@Autowired
+	PagedResourcesAssembler<BookVO> assembler;
 
 	@ApiOperation(value = "Return all Books recordeds in database") //Swagger endpoint description
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
-	public List<BookVO> findAll() throws Exception {
-		List<BookVO> books = services.findAll();
+	public ResponseEntity<?> findAll(
+			@RequestParam(value = "page", defaultValue = "0") int page, 
+			@RequestParam(value = "limit", defaultValue = "12") int limit,
+			@RequestParam(value = "direction", defaultValue = "asc") String direction)  //SpringBoot params to configure pagination and HATEOAS to the application
+					throws Exception {
+		
+		var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "title")); //Sort return list by name
+		
+		Page<BookVO> books = services.findAll(pageable);
 		// Implements HATEOAS
 		books.stream().forEach(p -> {
 			try {
@@ -41,7 +59,32 @@ public class BookController {
 				e.printStackTrace();
 			}
 		});
-		return books;
+		return new ResponseEntity<>(this.assembler.toResource(books), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "Return all Books recordeds in database with name filtered") //Swagger endpoint description
+	@GetMapping(value = "/findBookByName/{bookName}", produces = { "application/json", "application/xml", "application/x-yaml" })
+	public ResponseEntity<?> findBookByName(
+			@PathVariable("bookName") String bookName,
+			@RequestParam(value = "page", defaultValue = "0") int page, 
+			@RequestParam(value = "limit", defaultValue = "12") int limit,
+			@RequestParam(value = "direction", defaultValue = "asc") String direction)  //SpringBoot params to configure pagination and HATEOAS to the application
+					throws Exception {
+		
+		var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "title")); //Sort return list by name
+		
+		Page<BookVO> books = services.findBookByName(bookName, pageable);
+		// Implements HATEOAS
+		books.stream().forEach(p -> {
+			try {
+				p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		return new ResponseEntity<>(this.assembler.toResource(books), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Return Book recorded by id passed") //Swagger endpoint description 

@@ -1,8 +1,8 @@
 package br.com.andrefilipeos.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,9 +79,18 @@ public class PersonServices {
 		
 	}
 
-	public List<PersonVO> findAll() {
-		
-		return DozerMapperConverter.parseListObjects(repository.findAll(), PersonVO.class);
+	public Page<PersonVO> findAll(Pageable pageable) {
+		var entities = repository.findAll(pageable); //Return http request with pagination
+		return entities.map(this::convertToPersonVO); 
+	}
+	
+	public Page<PersonVO> findPersonByName(String firstName, Pageable pageable) {
+		var entities = repository.findPersonByName(firstName, pageable); //Return http request with pagination and filter name
+		return entities.map(this::convertToPersonVO); 
+	}
+	
+	private PersonVO convertToPersonVO(Person entity) {
+		return DozerMapperConverter.parseObject(entity, PersonVO.class);
 	}
 
 }
