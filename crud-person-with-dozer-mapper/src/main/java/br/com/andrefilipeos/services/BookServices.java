@@ -1,8 +1,8 @@
 package br.com.andrefilipeos.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.andrefilipeos.converter.DozerMapperConverter;
@@ -56,8 +56,18 @@ public class BookServices {
 		
 	}
 
-	public List<BookVO> findAll() {
-		
-		return DozerMapperConverter.parseListObjects(repository.findAll(), BookVO.class);
+	public Page<BookVO> findAll(Pageable pageable) {
+		var books = repository.findAll(pageable); //Return http request with pagination
+		return books.map(this::convertToBookVO);
 	}
+	
+	public Page<BookVO> findBookByName(String bookName, Pageable pageable) {
+		var books = repository.findBookByName(bookName, pageable); //Return http request with pagination and filter name
+		return books.map(this::convertToBookVO); 
+	}
+	
+	private BookVO convertToBookVO(Book book) {
+		return DozerMapperConverter.parseObject(book, BookVO.class);
+	}
+	
 }
